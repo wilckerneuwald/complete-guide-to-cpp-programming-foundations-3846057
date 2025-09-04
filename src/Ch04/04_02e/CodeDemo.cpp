@@ -7,7 +7,7 @@
 
 int main(){
     int a = 37;
-    int *ptr;
+    int* ptr;
 
     ptr = &a;
 

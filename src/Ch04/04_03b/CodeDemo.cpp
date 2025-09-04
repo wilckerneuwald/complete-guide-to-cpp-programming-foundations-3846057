@@ -9,6 +9,12 @@ int main(){
     int* scorePtr = highScores;   // Pointer initialized to the address of the array
 
     std::cout << "Initial high score: " << *scorePtr << std::endl;  // Display the first high score using pointer
+    std::cout << "Second high score: " << *(scorePtr + 1) << std::endl;
+    std::cout << "Third high score: " << scorePtr[2] << std::endl;
+
+    std::cout << "Initial high score address: " << scorePtr << std::endl;
+    std::cout << "Second high score address: " << (scorePtr + 1) << std::endl;
+    std::cout << "Third high score address: " << &scorePtr[2] << std::endl;
 
     std::cout << std::endl << std::endl;
     return 0;

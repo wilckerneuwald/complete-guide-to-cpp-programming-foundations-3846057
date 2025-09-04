@@ -12,14 +12,24 @@ int main(){
     std::cout << "Initial Zombies Incoming: " << incoming_zombies << std::endl;
 
     // Addition assignment
+    ammo += 10;
+    std::cout << ammo << std::endl;
 
     // Subtraction assignment
+    ammo -= 5;
+    std::cout << ammo << std::endl;
 
     // Multiplication assignment
+    ammo *= 2;
+    std::cout << ammo << std::endl;
 
     // Division assignment
+    ammo /= 2;
+    std::cout << ammo << std::endl;
 
     // Remainder assignment
+    ammo %= 6;
+    std::cout << ammo << std::endl;
 
     std::cout << std::endl << std::endl;
     return 0;
