@@ -11,7 +11,7 @@ void get_sequence_factorials(const int n, int* sequence) {
     for (int i = 1; i <= n; i++) {
         *(sequence + i) = *(sequence + i - 1) * i;
     }
-}
+}  // Could also have used recursion printing elements instead of building a sequence to print later
 
 int main() {
     int n = 10;
