@@ -1,10 +1,10 @@
 // Complete Guide to C++ Programming Foundations
 // Exercise 05_03
-// Switch Statements, by Eduardo Corpeño 
+// Switch Statements, by Eduardo Corpeño
 
 #include <iostream>
 
-int main(){
+int main() {
     float operand_1, operand_2, result;
     char operation;
 
@@ -15,10 +15,25 @@ int main(){
     std::cout << "Choose operation [ + - * / ]: " << std::flush;
     std::cin >> operation;
 
-    // switch goes here
+    switch (operation) {
+        case '+':
+            result = operand_1 + operand_2;
+            break;
+        case '-':
+            result = operand_1 - operand_2;
+            break;
+        case '*':
+            result = operand_1 * operand_2;
+            break;
+        case '/':
+            result = operand_1 / operand_2;
+            break;
+        default:
+            std::cout << "Not specified" << std::endl;
+    }
 
     std::cout << "The result is " << result << std::endl;
-    
+
     std::cout << std::endl << std::endl;
     return (0);
 }

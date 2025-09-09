@@ -10,7 +10,7 @@
 
 class Inventory {
    public:
-    // Constructor
+    // Default Constructor
     Inventory();
 
     // Overloaded Constructor
@@ -20,13 +20,13 @@ class Inventory {
     ~Inventory();
 
     // Add item to inventory
-    Inventory& operator+=(const std::string& item);
+    void addItem(const std::string& item);
 
     // Remove item from inventory
-    Inventory& operator-=(const std::string& item);
+    void removeItem(const std::string& item);
 
     // Access item by index
-    std::string operator[](int index) const;
+    std::string getItem(int index) const;
 
     // Get number of items in the inventory
     int getItemCount() const;
