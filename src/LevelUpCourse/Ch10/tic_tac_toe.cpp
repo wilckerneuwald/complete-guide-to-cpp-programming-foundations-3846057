@@ -12,7 +12,7 @@
 
 using pos = std::pair<int, int>;
 
-void display_table(const std::set<pos>& user_played_positions,
+void display_board(const std::set<pos>& user_played_positions,
                    const std::set<pos>& bot_played_positions) {
     std::string line;
     for (int i = 1; i <= 3; i++) {
@@ -28,7 +28,9 @@ void display_table(const std::set<pos>& user_played_positions,
     }
 }
 
-bool is_valid_arg(const std::string& arg) { return (arg == "1") || (arg == "2") || (arg == "3"); }
+bool is_valid_arg(const std::string& arg) {
+    return (arg == "1") || (arg == "2") || (arg == "3") || (arg == "q");
+}
 
 bool is_valid_position(const pos& new_pos, const std::set<pos>& user_played_positions,
                        const std::set<pos>& bot_played_positions) {
@@ -99,47 +101,64 @@ bool is_game_finished(const std::set<pos>& user_played_positions,
     return false;
 }
 
-int main() {
-    std::mt19937 gen(42);  // Fixed seed for repeatability of bot behavior
+std::string get_valid_input(const std::string& input) {
+    int count_inputs = 0;
+    std::string arg;
+    do {
+        if (count_inputs > 0)
+            std::cout << "Invalid " + input + " inserted. Try again..." << std::endl;
+        std::cout << "Enter " + input + " {1, 2 or 3} or 'q' to exit: " << std::flush;
+        std::cin >> arg;
+        count_inputs++;
+    } while (!is_valid_arg(arg));
+    return arg;
+}
 
-    bool game_finished = false;
+bool user_plays(std::set<pos>& user_played_positions, const std::set<pos>& bot_played_positions) {
     std::string line, column;
+    pos new_position;
+    int count_plays = 0;
+
+    do {
+        if (count_plays > 0) std::cout << "Position was already played. Try again..." << std::endl;
+
+        line = get_valid_input("line");
+        if (line == "q") return false;
+
+        column = get_valid_input("column");
+        if (column == "q") return false;
+
+        new_position = pos(std::stoi(line), std::stoi(column));
+        count_plays++;
+
+    } while (!is_valid_position(new_position, user_played_positions, bot_played_positions));
+
+    user_played_positions.insert(new_position);
+
+    return true;
+}
+
+void run_tic_tac_toe() {
+    std::mt19937 gen(42);  // Fixed seed for repeatability of bot behavior
+    bool game_finished = false;
     std::set<pos> user_played_positions;
     std::set<pos> bot_played_positions;
     while (!game_finished) {
-        std::cout << "Check out the current table position where you are represented by 'x' and "
+        std::cout << "Check out the current board status where you are represented by 'x' and "
                      "the bot by 'o'."
                   << std::endl;
-        display_table(user_played_positions, bot_played_positions);
-        std::cout << "Enter line {1, 2 or 3} or 'q' to exit: " << std::flush;
-        std::cin >> line;
-        if (line == "q") break;
-        if (!is_valid_arg(line)) {
-            std::cout << "Invalid line inserted. Try again..." << std::endl;
-            continue;
-        }
-        std::cout << "Enter column {1, 2 or 3}  or 'q' to exit: " << std::flush;
-        std::cin >> column;
-        if (column == "q") break;
-        if (!is_valid_arg(column)) {
-            std::cout << "Invalid column inserted. Try again..." << std::endl;
-            continue;
-        }
-        pos new_position = pos(std::stoi(line), std::stoi(column));
-        if (is_valid_position(new_position, user_played_positions, bot_played_positions)) {
-            user_played_positions.insert(new_position);
-        } else {
-            std::cout << "Position was already played. Try again..." << std::endl;
-            continue;
-        }
-        game_finished = is_game_finished(user_played_positions, bot_played_positions);
-        if (game_finished) break;
+        display_board(user_played_positions, bot_played_positions);
+        if (!user_plays(user_played_positions, bot_played_positions)) break;
+        if (is_game_finished(user_played_positions, bot_played_positions)) break;
         bot_plays(user_played_positions, bot_played_positions, gen);
         game_finished = is_game_finished(user_played_positions, bot_played_positions);
     }
 
     std::cout << "Final Position:" << std::endl;
-    display_table(user_played_positions, bot_played_positions);
+    display_board(user_played_positions, bot_played_positions);
+}
 
+int main() {
+    run_tic_tac_toe();
     return 0;
 }
