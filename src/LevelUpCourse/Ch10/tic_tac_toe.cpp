@@ -55,23 +55,25 @@ void bot_plays(const std::set<pos>& user_played_positions, std::set<pos>& bot_pl
 }
 
 bool is_game_won(const std::set<pos>& played_positions) {
-    int line_sum = 0;
-    int column_sum = 0;
+    int lines_sum[3] = {0, 0, 0};
+    int columns_sum[3] = {0, 0, 0};
     int main_diag_sum = 0;
     int sec_diag_sum = 0;
     bool game_won = false;
 
     for (int i = 1; i <= 3; i++) {
         for (pos play : played_positions) {
-            if (i == play.first) line_sum++;
-            if (i == play.second) column_sum++;
+            if (i == play.first) lines_sum[i - 1]++;
+            if (i == play.second) columns_sum[i - 1]++;
             if (i == play.first && i == play.second) main_diag_sum++;
             if (((4 - i) == play.first) && (i == play.second)) sec_diag_sum++;
         }
     }
 
-    game_won |= line_sum == 3;
-    game_won |= column_sum == 3;
+    for (int i = 0; i < 3; i++) {
+        game_won |= lines_sum[i] == 3;
+        game_won |= columns_sum[i] == 3;
+    }
     game_won |= main_diag_sum == 3;
     game_won |= sec_diag_sum == 3;
 
@@ -105,7 +107,8 @@ int main() {
     std::set<pos> user_played_positions;
     std::set<pos> bot_played_positions;
     while (!game_finished) {
-        std::cout << "Check out the current table position where user is 'x' and bot is 'o'."
+        std::cout << "Check out the current table position where you are represented by 'x' and "
+                     "the bot by 'o'."
                   << std::endl;
         display_table(user_played_positions, bot_played_positions);
         std::cout << "Enter line {1, 2 or 3} or 'q' to exit: " << std::flush;
