@@ -44,5 +44,7 @@ int main() {
         if (relatives_found) break;
     }
 
+    file.close();
+
     return 0;
 }
